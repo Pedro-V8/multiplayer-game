@@ -37,29 +37,45 @@
                 }
             }
             function movePlayer(command){
-                console.log(`Moving ${command.playerId} with ${command.keyPressed}`)
+                console.log(`game.moving() ->  ${command.playerId} with ${command.keyPressed}`)
+
+                const acceptMoves = {
+                    //Com o novo recurso do JS, ele aproveita o nome das funções que são os valores e atribui nas chaves(ArrowUp: function ArrowUp(player){ console.log() })
+                        //Aparentemente só funciona para funções =)
+                    ArrowUp(player){
+                        console.log('Moving player Up')
+                        if(player.y - 1 >= 0){
+                            player.y -= 1
+                        }
+                    },
+                    ArrowRight(player){
+                        console.log('Moving player Right')
+                        if(player.x + 1 < screen.width){
+                            player.x += 1
+                        }
+                    },
+                    ArrowDown(player){
+                        console.log('Moving player Down')
+                        if(player.y + 1 < screen.height){
+                            player.y += 1
+                        }
+                    },
+                    ArrowLeft(player){
+                        console.log('Moving player left')
+                        if(player.x - 1 >= 0){
+                            player.x -= 1
+                        }
+                    }
+                }
 
                 const keyPressed = command.keyPressed
                 const player = state.players[command.playerId]
+                const moveFunction = acceptMoves[keyPressed]
 
-                if(keyPressed === 'ArrowUp' && player.y -1   >= 0){
-                    player.y -= 1
-                    return
+                if(moveFunction){
+                    moveFunction(player)
                 }
-                if(keyPressed === 'ArrowDown' && player.y + 1< screen.height){
-                    player.y += 1
-                    return
-                }
-
-                if(keyPressed === 'ArrowLeft' && player.x - 1>= 0){
-                    player.x -= 1
-                    return
-                }
-
-                if(keyPressed === 'ArrowRight' && player.x + 1 < screen.width){
-                    player.x += 1
-                    return
-                }
+                return //TEMPORARIO
             }
             
             return{
@@ -85,7 +101,7 @@
             }
 
             function notifyAll(command){
-                console.log(`Notifying ${state.observers.length} observers`)
+                console.log(`keyboardListener() -> Notifying ${state.observers.length} observers`)
 
                 for(const observerFunction of state.observers) {
                     observerFunction(command)
