@@ -1,5 +1,5 @@
 export default function renderScreem(screen , game , requestAnimationFrame){
-    const context = getContext('2d')
+    const context = screen.getContext('2d')
     context.fillStyle = 'white'
     context.clearRect(0 , 0 , 10 , 10)
     for(const playerId in game.state.players){
